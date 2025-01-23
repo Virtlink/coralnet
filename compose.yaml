@@ -13,7 +13,7 @@ services:
       - CORALNET_DATABASE_HOST=db         # Name of the `db` container below
       - CORALNET_SECRET_KEY=mysecretkey # TODO Fix
     tmpfs:
-      - /log/
+      - /log/:exec,mode=777
     develop:
       watch:
         - action: rebuild
