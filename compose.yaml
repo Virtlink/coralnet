@@ -1,4 +1,6 @@
 ---
+name: coralnet
+
 services:
   server:
     build:
