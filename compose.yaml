@@ -1,0 +1,44 @@
+
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    environment:
+      - CORALNET_SETTINGS_BASE=dev-local
+      - CORALNET_DATABASE_NAME=coralnet
+      - CORALNET_DATABASE_USER=django
+      - CORALNET_DATABASE_PASSWORD=mysecretpassword  # TODO Fix
+      - CORALNET_DATABASE_HOST=db         # Name of the `db` container below
+      - CORALNET_SECRET_KEY=mysecretkey # TODO Fix
+    tmpfs:
+      - /log/
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=django
+      - POSTGRES_DB=coralnet
+      - POSTGRES_PASSWORD=mysecretpassword  # TODO Fix
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
