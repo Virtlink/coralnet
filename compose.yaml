@@ -6,12 +6,12 @@ services:
     ports:
       - 8000:8000
     environment:
-      - CORALNET_SETTINGS_BASE=dev-local
-      - CORALNET_DATABASE_NAME=coralnet
-      - CORALNET_DATABASE_USER=django
-      - CORALNET_DATABASE_PASSWORD=mysecretpassword  # TODO Fix
+      - CORALNET_SETTINGS_BASE=${SETTINGS_BASE}
+      - CORALNET_DATABASE_NAME=${DATABASE_NAME}
+      - CORALNET_DATABASE_USER=${DATABASE_USER}
+      - CORALNET_DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - CORALNET_SECRET_KEY=${SECRET_KEY}
       - CORALNET_DATABASE_HOST=db         # Name of the `db` container below
-      - CORALNET_SECRET_KEY=mysecretkey # TODO Fix
     tmpfs:
       - /log/:exec,mode=777
     develop:
@@ -29,9 +29,9 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=django
-      - POSTGRES_DB=coralnet
-      - POSTGRES_PASSWORD=mysecretpassword  # TODO Fix
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     expose:
       - 5432
     healthcheck:
